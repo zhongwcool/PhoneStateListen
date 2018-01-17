@@ -12,6 +12,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewById(R.id.register_service).setOnClickListener(this);
+        findViewById(R.id.stop_service).setOnClickListener(this);
     }
 
     @Override
@@ -19,14 +20,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
         final int viewId = v.getId();
         switch (viewId) {
             case R.id.register_service:
-                registerPhoneStateListener();
+                registerCallStateListener();
+                break;
+            case R.id.stop_service:
+                stopCallStateListener();
                 break;
         }
     }
 
-    private void registerPhoneStateListener() {
+    private void registerCallStateListener() {
         Intent intent = new Intent(this, PhoneListenService.class);
         intent.setAction(PhoneListenService.ACTION_REGISTER_LISTENER);
+        startService(intent);
+    }
+
+    private void stopCallStateListener() {
+        Intent intent = new Intent(this, PhoneListenService.class);
+        intent.setAction(PhoneListenService.ACTION_STOP_LISTEN);
         startService(intent);
     }
 }
